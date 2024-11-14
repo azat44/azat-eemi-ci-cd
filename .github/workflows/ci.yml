@@ -34,9 +34,14 @@ jobs:
           composer install --prefer-dist --no-interaction --no-progress
       - name: "Run migrations"
         run: |
-          env
           php bin/console d:m:m
         env:
-          DATABASE_HOST: localhost
+          DATABASE_HOST: 127.0.0.1
           DATABASE_NAME: app
           DATABASE_PASSWORD: password
+      - name: "Start server"
+        run: |
+          php bin/console
+          php -S 127.0.0.1:8080 -t public &
+          sleep 2
+          nc -zv localhost 8080
